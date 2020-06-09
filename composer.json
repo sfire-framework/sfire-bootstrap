@@ -1,0 +1,50 @@
+{
+    "name": "sfire-framework/sfire-bootstrap",
+    "description": "Combining sFire packages with sFire skeleton app.",
+    "homepage": "https://sfire.io",
+    "keywords": [
+        "sfire",
+        "framework",
+        "mvc"
+    ],
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Kris Kuiper",
+            "email": "kris@sfire.io"
+        }
+    ],
+    "require": {
+        "php": ">=7.4",
+        "sfire-framework/sfire-datacontrol": "1.0.*",
+        "sfire-framework/sfire-db": "1.0.*",
+        "sfire-framework/sfire-debugging": "1.0.*",
+        "sfire-framework/sfire-http": "1.0.*",
+        "sfire-framework/sfire-localization": "1.0.*",
+        "sfire-framework/sfire-routing": "1.0.*",
+        "sfire-framework/sfire-session": "1.0.*",
+        "sfire-framework/sfire-store": "1.0.*",
+        "sfire-framework/sfire-template": "1.0.*",
+        "sfire-framework/sfire-validation": "1.1.*"
+    },
+    "suggest": {
+        "sfire-framework/sfire-cache": "Package for temporarily saving and retrieving data to and from cache using file system, APCu or Redis.",
+        "sfire-framework/sfire-captcha": "Package for turing test to tell computers and humans apart made easy with sFire captcha.",
+        "sfire-framework/sfire-dom": "Package for working with HTML and XML",
+        "sfire-framework/sfire-encryption": "Package for encrypting and decrypting data",
+        "sfire-framework/sfire-filecontrol": "Package for working with files, directories and mime types",
+        "sfire-framework/sfire-image": "Package for applying filters, cropping, resizing, flipping and determining colors in images",
+        "sfire-framework/sfire-logging": "Package for logging data to file system",
+        "sfire-framework/sfire-mail": "Package for sending emails allowing you to quickly get started sending mail",
+        "sfire-framework/sfire-otp": "Package for creating and verifying One Time Passwords based on Time and HMAC",
+        "sfire-framework/sfire-permissions": "Package for ACL which specifies if users/roles or system processes are granted access to resources, as well as what operations are allowed on given resources"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8"
+    },
+    "autoload": {
+        "psr-4": {
+            "sFire\\Bootstrap\\": "./src/"
+        }
+    }
+}
