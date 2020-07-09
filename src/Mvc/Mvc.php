@@ -131,6 +131,10 @@ class Mvc {
      */
     public function executeController(): void {
 
+        if(null === $this -> route -> getController() || null === $this -> route -> getAction()) {
+            return;
+        }
+
 	    $class      = static :: getMvcClass('controller', $this -> route -> getModule(), $this -> route -> getController());
         $controller = new $class;
 
@@ -144,7 +148,7 @@ class Mvc {
 
         //Trigger error if main function does not exists
         if(false === is_callable([$controller, $action])) {
-            throw new BadMethodCallException(sprintf('Method "%s" does not exists in "%s" controller', App :: getInstance() -> get('prefix.action') . ucfirst($this -> route -> getAction()), $this -> route -> getController()));
+            throw new BadMethodCallException(sprintf('Method "%s" does not exists in "%s" controller', App :: getInstance() -> get('prefix.action') . ucfirst((string) $this -> route -> getAction()), $this -> route -> getController()));
         }
 
         //Execute main controller action

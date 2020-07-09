@@ -26,14 +26,14 @@ class Router {
 
 
     /**
-     * Contains instance of Cookie
-     * @var null|Router
+     * Contains instance of self
+     * @var null|self
      */
     private static ?self $instance = null;
 
 
     /**
-     * Returns an instance of self
+     * Returns instance of self
      * @return self
      */
     public static function getInstance(): self {

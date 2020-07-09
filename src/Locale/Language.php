@@ -22,14 +22,14 @@ class Language {
 
 
     /**
-     * Contains instance of Response
-     * @var Language
+     * Contains instance of self
+     * @var null|self
      */
     private static ?self $instance = null;
 
 
     /**
-     * Returns instance of the Language object
+     * Returns instance of self
      * @return self
      */
     public static function getInstance(): self {

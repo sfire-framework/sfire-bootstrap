@@ -17,6 +17,7 @@ use sFire\Bootstrap\Exception\BadMethodCallException;
 use sFire\Bootstrap\Mapper\Result\ResultEntityIterator;
 use sFire\Bootstrap\Mapper\Result\ResultIterator;
 use sFire\Bootstrap\Mvc\Helpers\MvcHelperTrait;
+use sFire\DataControl\Translators\StringTranslator;
 use stdClass;
 
 
@@ -33,15 +34,29 @@ abstract class MapperAbstract {
     /**
      * Returns the data as an array
      * @param null|ArrayIterator $result
+     * @param null|string $path
      * @return null|array
      */
-    protected function toArray(ArrayIterator $result = null): ?array {
+    protected function toArray(ArrayIterator $result = null, string $path = null): ?array {
 
         if(null === $result) {
             return null;
         }
 
-        return iterator_to_array($result);
+        $result = iterator_to_array($result);
+
+        if(null !== $path) {
+
+            $output = [];
+
+            foreach($result as $item) {
+                $output[] = (new StringTranslator($item)) -> get($path);
+            }
+
+            return $output;
+        }
+
+        return $result;
     }
 
 
@@ -49,9 +64,14 @@ abstract class MapperAbstract {
      * Returns the data as an array with entities that implements the EntityAbstract
      * @param ArrayIterator $result
      * @param EntityAbstract $entity An instance of a entity
+     * @param null|string $path
      * @return null|EntityAbstract[]
      */
-    protected function toEntityArray(ArrayIterator $result, EntityAbstract $entity): ?array {
+    protected function toEntityArray(ArrayIterator $result, string $entity, string $path = null): ?array {
+
+        if(false === class_exists($entity) || false === (new $entity) instanceof EntityAbstract) {
+            throw new BadMethodCallException(sprintf('Argument 2 passed to %s() must be a string that represents a namespace with class that implements %s', __METHOD__, EntityAbstract::class));
+        }
 
         if(null === $result) {
             return null;
@@ -60,6 +80,10 @@ abstract class MapperAbstract {
         $output = [];
 
         foreach($result as $item) {
+
+            if(null !== $path) {
+                $item = (new StringTranslator($item)) -> get($path);
+            }
 
             /** @var EntityAbstract $entity */
             $entity = new $entity;
@@ -75,15 +99,22 @@ abstract class MapperAbstract {
      * Returns a single entity that implements the EntityAbstract class
      * @param ArrayIterator $result
      * @param string $entity Namespace with class name that implements the EntityAbstract class
+     * @param null|string $path
      * @return mixed A single entity that implements the EntityAbstract class
      */
-    protected function toEntity(ArrayIterator $result, string $entity) {
+    protected function toEntity(ArrayIterator $result, string $entity, string $path = null) {
 
         if(false === class_exists($entity) || false === (new $entity) instanceof EntityAbstract) {
             throw new BadMethodCallException(sprintf('Argument 2 passed to %s() must be an instance or a string that represents a namespace with class that implements %s', __METHOD__, EntityAbstract::class));
         }
 
-        return (new ResultEntityIterator([$result -> current()], $entity)) -> current();
+        $data = $result -> current();
+
+        if(null !== $data && null !== $path) {
+            $data = (new StringTranslator($data)) -> get($path);
+        }
+
+        return (new ResultEntityIterator([$data], $entity)) -> current();
     }
 
 

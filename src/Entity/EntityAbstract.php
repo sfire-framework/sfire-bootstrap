@@ -32,7 +32,7 @@ abstract class EntityAbstract {
 
 
     /**
-     * Holds an instance of a class that inherits the GatewayAbstract class
+     * Contains an instance of a class that inherits the GatewayAbstract class
      * @var null|GatewayAbstract
      */
     private ?GatewayAbstract $gateway = null;
@@ -42,7 +42,7 @@ abstract class EntityAbstract {
      * Contains all the properties
      * @var array
      */
-    protected array $properties = [];
+    protected array $_properties = [];
 
 
     /**
@@ -55,7 +55,7 @@ abstract class EntityAbstract {
      */
     public function __call($method, $parameters) {
 
-        foreach($this -> properties as $property) {
+        foreach($this -> _properties as $property) {
 
             //Getters
             if($property -> getter === $method) {
@@ -73,7 +73,7 @@ abstract class EntityAbstract {
                     case 'float'  : return (float) $value;
                     case 'bool'   : return (bool) $value;
                     case 'date'   : return new DateTime($value);
-                    case 'json'   : return json_decode($value, JSON_INVALID_UTF8_IGNORE);
+                    case 'json'   : return json_decode($value, true);
                 }
 
                 return $value;
@@ -143,7 +143,7 @@ abstract class EntityAbstract {
         $property -> getter('get' . TypeString :: toPascalCase($propertyName));
         $property -> setter('set' . TypeString :: toPascalCase($propertyName));
 
-        $this -> properties[$propertyName] = $property;
+        $this -> _properties[$propertyName] = $property;
 
         return $property;
     }
@@ -156,7 +156,7 @@ abstract class EntityAbstract {
      */
     final public function fromArray(array $data): void {
 
-        foreach($this -> properties as $property) {
+        foreach($this -> _properties as $property) {
 
             if(true === isset($data[$property -> name])) {
                 $this -> {$property -> setter}($data[$property -> name]);
@@ -173,8 +173,15 @@ abstract class EntityAbstract {
 
         $data = [];
 
-        foreach($this -> properties as $property) {
-            $data[$property -> name] = $this -> getValueFromProperty($property);
+        foreach($this -> _properties as $property) {
+
+            $value = $this -> getValueFromProperty($property);
+
+            if('json' === $property -> type && true === is_string($value)) {
+                $value = json_decode($value, true);
+            }
+
+            $data[$property -> name] = $value;
         }
 
         return $data;
@@ -215,7 +222,7 @@ abstract class EntityAbstract {
      */
     final public function clear(): void {
 
-        foreach($this -> properties as $property) {
+        foreach($this -> _properties as $property) {
             $this -> {$property -> setter}(null);
         }
     }

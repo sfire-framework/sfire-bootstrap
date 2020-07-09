@@ -23,14 +23,14 @@ class Path {
 
 
     /**
-     * Contains instance of Request
-     * @var null|Path
+     * Contains instance of self
+     * @var null|self
      */
     private static ?self $instance = null;
 
 
     /**
-     * Returns instance of Path
+     * Returns instance of self
      * @return self
      */
     public static function getInstance(): self {

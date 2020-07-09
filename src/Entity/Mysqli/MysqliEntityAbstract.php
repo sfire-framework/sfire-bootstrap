@@ -35,7 +35,7 @@ abstract class MysqliEntityAbstract extends EntityAbstract {
         $identifiers = [];
         $values      = [];
 
-        foreach($this -> properties as $property) {
+        foreach($this -> _properties as $property) {
 
             if(true === $property -> isPrimary && true === in_array($property -> type, ['int', null])) {
                 $identifiers[] = $property;
@@ -48,6 +48,11 @@ abstract class MysqliEntityAbstract extends EntityAbstract {
 
             $column = $property -> name;
             $value  = $this -> getValueFromProperty($property);
+            
+            if(true === is_array($value) && 'json' === $property -> type) {
+                $value = json_encode($value, JSON_INVALID_UTF8_IGNORE);
+            }
+            
             $values[$column] = $value;
         }
 
@@ -132,7 +137,7 @@ abstract class MysqliEntityAbstract extends EntityAbstract {
         $parameters = [];
         $unique     = [];
 
-        foreach($this -> properties as $property) {
+        foreach($this -> _properties as $property) {
 
             if(true === $property -> isPrimary) {
 

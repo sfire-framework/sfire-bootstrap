@@ -23,14 +23,14 @@ class Response extends \sFire\Http\Response {
 
 
     /**
-     * Contains instance of Response
-     * @var Response
+     * Contains instance of self
+     * @var null|self
      */
     private static ?self $instance = null;
 
 
     /**
-     * Returns instance of the Response object
+     * Returns instance of self
      * @return self
      */
     public static function getInstance(): self {

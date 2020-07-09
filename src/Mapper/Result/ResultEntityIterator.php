@@ -13,6 +13,7 @@ namespace sFire\Bootstrap\Mapper\Result;
 
 use ArrayIterator;
 use ReflectionClass;
+use ReflectionException;
 use sFire\Bootstrap\Entity\EntityAbstract;
 use sFire\Bootstrap\Exception\BadMethodCallException;
 
@@ -36,6 +37,7 @@ class ResultEntityIterator extends ArrayIterator {
      * @param array $data
      * @param string $entity Namespace with class name that implements the EntityAbstract class
      * @throws BadMethodCallException
+     * @throws ReflectionException
      */
     public function __construct(array $data, string $entity) {
 

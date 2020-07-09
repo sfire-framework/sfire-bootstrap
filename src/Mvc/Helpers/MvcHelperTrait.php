@@ -151,4 +151,16 @@ trait MvcHelperTrait {
 
         return $instance;
     }
+
+
+    /**
+     * Returns an instance of Cache to able to retrieve and store cache
+     * @return Cache
+     */
+    public function cache(): Cache {
+
+        $instance = Cache :: getInstance();
+        return $instance;
+    }
+    
 }

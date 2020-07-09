@@ -39,8 +39,8 @@ class Module {
 
 
     /**
-     * Contains instance of Request
-     * @var null|Module
+     * Contains instance of self
+     * @var null|self
      */
     private static ?self $instance = null;
 
@@ -53,7 +53,7 @@ class Module {
 
 
     /**
-     * Returns instance of Module
+     * Returns instance of self
      * @return self
      */
     public static function getInstance(): self {

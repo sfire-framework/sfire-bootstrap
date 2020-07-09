@@ -22,14 +22,14 @@ class Request extends RequestObject {
 
 
     /**
-     * Contains instance of Response
-     * @var Request
+     * Contains instance of self
+     * @var null|self
      */
     private static ?self $instance = null;
 
 
     /**
-     * Returns instance of the Request object
+     * Returns instance of self
      * @return self
      */
     public static function getInstance(): self {

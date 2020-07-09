@@ -140,9 +140,14 @@ class MiddlewareContainer {
 			throw new InvalidArgumentException(sprintf('Argument 2 passed to %s() must be either "before" or "after", "%s" given', __METHOD__, gettype($type)));
 		}
 
+        //Check if middleware class exists
+        if(false === class_exists($namespace)) {
+            throw new InvalidArgumentException(sprintf('Middleware "%s" does not exists', $namespace));
+        }
+
 		//Check if before or after method exists in middleware
 		if(false === is_callable([$namespace, $type])) {
-            throw new InvalidArgumentException(sprintf('Method "%()" does not exists for middleware "%s"', $type, $namespace));
+            throw new InvalidArgumentException(sprintf('Method "%s()" does not exists for middleware "%s"', $type, $namespace));
         }
 
         static::$namespaces[$namespace] ??= new $namespace;
