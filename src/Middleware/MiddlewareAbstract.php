@@ -29,7 +29,7 @@ class MiddlewareAbstract {
      * If there is none left, it will continue to load the controller of the route or stop executing if the controller already been executed
      * @return void
      */
-	public function next(): void {
-		MiddlewareContainer :: next();
-	}
+    public function next(): void {
+        MiddlewareContainer :: next();
+    }
 }

@@ -21,46 +21,46 @@ use sFire\Bootstrap\Exception\InvalidArgumentException;
 class MiddlewareContainer {
 
 
-	/**
-	 * Contains all the middleware before executing of the controller
-	 * @var array
-	 */
-	private static array $before = [];
+    /**
+     * Contains all the middleware before executing of the controller
+     * @var array
+     */
+    private static array $before = [];
 
 
-	/**
-	 * Contains all the middleware after executing of the controller
-	 * @var array
-	 */
-	private static array $after = [];
+    /**
+     * Contains all the middleware after executing of the controller
+     * @var array
+     */
+    private static array $after = [];
 
 
-	/**
-	 * Contains the current mode (before or after)
-	 * @var string
-	 */
-	private static string $mode = 'before';
+    /**
+     * Contains the current mode (before or after)
+     * @var string
+     */
+    private static string $mode = 'before';
 
 
-	/**
-	 * Contains all the found namespaces with class instances
-	 * @var array
-	 */
-	private static array $namespaces = [];
+    /**
+     * Contains all the found namespaces with class instances
+     * @var array
+     */
+    private static array $namespaces = [];
 
 
-	/**
-	 * Contains all the route variables to inject into the middleware
-	 * @var array
-	 */
-	private static array $matches = [];
-	
+    /**
+     * Contains all the route variables to inject into the middleware
+     * @var array
+     */
+    private static array $matches = [];
 
-	/**
-	 * Keeps count of all the middleware that has been executed
-	 * @var array
-	 */
-	private static array $counter = [
+
+    /**
+     * Keeps count of all the middleware that has been executed
+     * @var array
+     */
+    private static array $counter = [
 
         'before' => -1,
         'after' => -1
@@ -110,21 +110,21 @@ class MiddlewareContainer {
      * Reset the counters
      * @return void
      */
-	public function reset(): void {
+    public function reset(): void {
 
-	    static::$counter['before'] = -1;
-	    static::$counter['after'] = -1;
+        static::$counter['before'] = -1;
+        static::$counter['after'] = -1;
     }
 
 
-	/**
-	 * Sets the route variables to inject into the next middleware that needs to be executed
-	 * @param array $matches
-	 * @return void
-	 */
-	public function matches(array $matches): void {
-		static::$matches = $matches;
-	}
+    /**
+     * Sets the route variables to inject into the next middleware that needs to be executed
+     * @param array $matches
+     * @return void
+     */
+    public function matches(array $matches): void {
+        static::$matches = $matches;
+    }
 
 
     /**
@@ -134,19 +134,19 @@ class MiddlewareContainer {
      * @return void
      * @throws InvalidArgumentException
      */
-	public function add(string $namespace, string $type): void {
+    public function add(string $namespace, string $type): void {
 
-		if(false === in_array($type, ['before', 'after'])) {
-			throw new InvalidArgumentException(sprintf('Argument 2 passed to %s() must be either "before" or "after", "%s" given', __METHOD__, gettype($type)));
-		}
+        if(false === in_array($type, ['before', 'after'])) {
+            throw new InvalidArgumentException(sprintf('Argument 2 passed to %s() must be either "before" or "after", "%s" given', __METHOD__, gettype($type)));
+        }
 
         //Check if middleware class exists
         if(false === class_exists($namespace)) {
             throw new InvalidArgumentException(sprintf('Middleware "%s" does not exists', $namespace));
         }
 
-		//Check if before or after method exists in middleware
-		if(false === is_callable([$namespace, $type])) {
+        //Check if before or after method exists in middleware
+        if(false === is_callable([$namespace, $type])) {
             throw new InvalidArgumentException(sprintf('Method "%s()" does not exists for middleware "%s"', $type, $namespace));
         }
 
@@ -157,23 +157,23 @@ class MiddlewareContainer {
             case 'before': static::$before[] = static::$namespaces[$namespace]; break;
             case 'after': static::$after[] = static::$namespaces[$namespace]; break;
         }
-	}
+    }
 
 
-	/**
-	 * Check if there is more middleware to execute
-	 * @return bool
-	 */
-	public function isEmpty(): bool {
+    /**
+     * Check if there is more middleware to execute
+     * @return bool
+     */
+    public function isEmpty(): bool {
 
-		switch(static::$mode) {
+        switch(static::$mode) {
 
-			case 'before': return static::$counter[static::$mode] === count(static::$before); break;
-			case 'after': return static::$counter[static::$mode] === count(static::$after); break;
-		}
+            case 'before': return static::$counter[static::$mode] === count(static::$before); break;
+            case 'after': return static::$counter[static::$mode] === count(static::$after); break;
+        }
 
-		return true;
-	}
+        return true;
+    }
 
 
     /**
@@ -181,12 +181,12 @@ class MiddlewareContainer {
      * @param string $mode The mode (before or after)
      * @throws InvalidArgumentException
      */
-	public function mode(string $mode): void {
+    public function mode(string $mode): void {
 
-		if(false === in_array($mode, ['before', 'after'])) {
-			throw new InvalidArgumentException(sprintf('Argument 1 passed to %s() must be either "before" or "after", "%s" given', __METHOD__, gettype($mode)));
-		}
+        if(false === in_array($mode, ['before', 'after'])) {
+            throw new InvalidArgumentException(sprintf('Argument 1 passed to %s() must be either "before" or "after", "%s" given', __METHOD__, gettype($mode)));
+        }
 
-		static::$mode = $mode;
-	}
+        static::$mode = $mode;
+    }
 }

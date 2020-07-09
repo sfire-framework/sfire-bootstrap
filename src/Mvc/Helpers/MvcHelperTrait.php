@@ -42,7 +42,7 @@ trait MvcHelperTrait {
      * @return mixed
      * @throws BadMethodCallException
      */
-	public function provider(string $name, ...$arguments) {
+    public function provider(string $name, ...$arguments) {
 
         $provider = Provider :: getInstance() -> get($name);
 
@@ -59,7 +59,7 @@ trait MvcHelperTrait {
         }
 
         return $this -> providerCache[$name];
-	}
+    }
 
 
     /**

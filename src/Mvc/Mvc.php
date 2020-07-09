@@ -32,7 +32,7 @@ class Mvc {
      * Holds an instance of a Route
      * @var RouteEntity
      */
-	private ?RouteEntity $route = null;
+    private ?RouteEntity $route = null;
 
 
     /**
@@ -45,8 +45,8 @@ class Mvc {
     /**
      * Constructor
      */
-	public function __construct() {
-	    $this -> middlewareContainer = new MiddlewareContainer();
+    public function __construct() {
+        $this -> middlewareContainer = new MiddlewareContainer();
     }
 
 
@@ -56,15 +56,15 @@ class Mvc {
      */
     public function useRoute(RouteEntity $route): void {
 
-	    //Todo: $route -> validate();
+        //Todo: $route -> validate();
 
         //Set the local
         if($local = $route -> getLocale()) {
             App :: getInstance() -> set('locale', $local);
         }
 
-	    Router :: setRoute($route);
-	    $this -> route = $route;
+        Router :: setRoute($route);
+        $this -> route = $route;
     }
 
 
@@ -87,7 +87,7 @@ class Mvc {
         $this -> preloadMiddleware($this -> route);
 
         //Execute the before middleware
-	    $this -> executeBeforeMiddleware();
+        $this -> executeBeforeMiddleware();
 
         //Check if all the before middleware has been executed and that the last middleware want's to go to the controller by calling the next method
         if(false === $this -> middlewareContainer -> isEmpty()) {
@@ -135,7 +135,7 @@ class Mvc {
             return;
         }
 
-	    $class      = static :: getMvcClass('controller', $this -> route -> getModule(), $this -> route -> getController());
+        $class      = static :: getMvcClass('controller', $this -> route -> getModule(), $this -> route -> getController());
         $controller = new $class;
 
         //Execute start method if controller supports it
@@ -203,9 +203,9 @@ class Mvc {
      * @param RouteEntity $route
      * @return void
      */
-	private function preloadMiddleware(RouteEntity $route): void {
+    private function preloadMiddleware(RouteEntity $route): void {
 
-	    $middleware = $route -> getMiddleware();
+        $middleware = $route -> getMiddleware();
 
         if(null === $middleware) {
             return;
@@ -213,8 +213,8 @@ class Mvc {
 
         foreach($middleware as $class) {
 
-			$this -> middlewareContainer -> add($class, 'before');
-			$this -> middlewareContainer -> add($class, 'after');
-		}
-	}
+            $this -> middlewareContainer -> add($class, 'before');
+            $this -> middlewareContainer -> add($class, 'after');
+        }
+    }
 }
